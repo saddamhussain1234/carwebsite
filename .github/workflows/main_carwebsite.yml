@@ -8,6 +8,7 @@ on:
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
@@ -28,7 +29,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
-        run: docker build -t carwebsite .
+        run: docker build -t carwebsite -f "car website/Dockerfile" "car website/carwebsite-main/carwebsite"
 
       - name: Tag Docker image
         run: docker tag carwebsite:latest ${{ steps.login-ecr.outputs.registry }}/carwebsite:latest
